@@ -1,0 +1,37 @@
+debug: false
+spring:
+  application:
+    name: instant-cake
+  jackson:
+    serializazion:
+      WRITE_DATES_AS_TIMESTAMPS : false
+  data:
+    rest:
+      base-path: /api
+---
+# dev : profile to be handle in dev only
+#      it provides a quick reference for the entities
+#      it does nothing more that loading the database with a specific bean in the Application
+spring:
+  profiles: dev
+server:
+  port: 9000
+cors:
+  pattern: "/api/**"
+  origin: "http://localhost:8080"
+  methods: "*"
+  headers: "*"
+---
+# heroku : profile to be used in production
+#          the database behaviour is specified by environment variables
+spring:
+  profiles: heroku
+  datasource:
+      url: ${JDBC_DATABASE_URL}
+      username: ${JDBC_DATABASE_USERNAME}
+      password: ${JDBC_DATABASE_PASSWORD}
+cors:
+  pattern: ${CORS_BASE_PATTERN}
+  origin:  ${ALLOWED_ORIGIN}
+  methods: ${ALLOWED_HEADERS}
+  headers: ${ALLOWED_METHODS}
